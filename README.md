@@ -1,4 +1,8 @@
 Bioinformatics Course for Computer Science II
 
 In this repository:
-Needleman-wunsch - for global alignment
+
+- Alignment of Strings 
+    1. Needleman-wunsch 
+- Building Phylogenetic Trees:
+    1. UPGMA
