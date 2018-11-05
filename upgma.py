@@ -19,20 +19,22 @@ class UPGMA:
         # need to initialise nodes
         self.n = n
         self.clusters = []
-        self.dist_matrix = dist_matrix
-        # initialise clusters of single nodes
+        self.dist_matrix = np.array([[-1]*(2*n+1)]*(2*n+1))
+
         # initialise distance matrix to be 2n+1 by 2n+1
-        for i in range(n, 2*n+1):
-            self.dist_matrix[i] = self.dist_matrix[i] + [-1 for j in range(n, 2*n+1)]
-            self.dist_matrix.append([-1 for k in range(2*n+1)])
         for i in range(n):
-            self.clusters[i] = Cluster(label=str(i), nodes=[i])
+            self.dist_matrix[i][:n] = dist_matrix[i]
+
+        # initialise clusters of single nodes
+        for i in range(n):
+            self.clusters.append(Cluster(label=str(i), nodes=[i]))
 
 
-    def print_clusters(clusters):
-        for i in range(len(clusters)):
+    def print_clusters(self, clusters, alive_clusters_indices):
+        for i in range(len(alive_clusters_indices)):
+            index = alive_clusters_indices[i]
             print ("cluster" + str(i))
-            print(clusters[i].nodes)
+            print (clusters[index].nodes)
 
     def upgma(self):
         clusters = self.clusters
@@ -40,15 +42,14 @@ class UPGMA:
 
         alive_clusters_indices = [i for i in range(no_clusters)] # stores indices into distance matrix of alive clusters
         new_node_id = self.n
-        dist_matrix_sz = len(self.dist_matrix)
 
-        while(no_clusters > 0):
+        while(no_clusters > 1):
             ci_index = 0
             cj_index = 0
 
             lowest_dist = sys.maxsize
 
-            for x in range(no_clusters): # loop to 2n+1
+            for x in range(no_clusters): # loop through clusters
                 for y in range(x+1, no_clusters): # loop from i+1 to avoid repeated comparisons
                     i = alive_clusters_indices[x]
                     j = alive_clusters_indices[y]
@@ -77,11 +78,6 @@ class UPGMA:
                 self.dist_matrix[new_node_id][i] = d_avg
 
 
-            self.dist_matrix[ci_index] = -1
-            self.dist_matrix[:, ci_index] = -1
-            self.dist_matrix[cj_index] = -1
-            self.dist_matrix[:, cj_index] = -1
-
             clusters.append(c_new)
             alive_clusters_indices.append(new_node_id)
 
@@ -89,16 +85,16 @@ class UPGMA:
             no_clusters -= 1
             new_node_id += 1
 
-            self.print_clusters(clusters)
+            self.print_clusters(clusters, alive_clusters_indices)
 
         return clusters
 
 
-dist_matrix = np.matrix([[0, 3, 4, 4, 4],
+dist_matrix = np.array([[0, 3, 4, 4, 4],
                          [3, 0, 4, 4, 4],
                          [4, 4, 0, 1, 2],
                          [4, 4, 1, 0, 1],
                          [4, 4, 2, 2, 0]])
-upgma = UPGMA(dist_matrix, dist_matrix.size)
+upgma = UPGMA(dist_matrix, len(dist_matrix))
 upgma.upgma()
 
