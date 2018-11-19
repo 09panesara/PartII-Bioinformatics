@@ -1,7 +1,6 @@
 import numpy as np
 import sys
 
-
 class Cluster:
     def __init__(self, label, nodes, left=None, right=None, age=None):
         self.label = label
@@ -33,7 +32,8 @@ class UPGMA:
     def print_clusters(self, clusters, alive_clusters_indices):
         for i in range(len(alive_clusters_indices)):
             index = alive_clusters_indices[i]
-            print ("cluster" + str(i))
+            print ("cluster" + str(i) + ", age: " + str(clusters[index].age))
+            # tree = [(node,no) for node in clusters[index].nodes]
             print (clusters[index].nodes)
 
     def upgma(self):
@@ -43,6 +43,7 @@ class UPGMA:
         alive_clusters_indices = [i for i in range(no_clusters)] # stores indices into distance matrix of alive clusters
         new_node_id = self.n
 
+        self.print_clusters(clusters, alive_clusters_indices)
         while(no_clusters > 1):
             ci_index = 0
             cj_index = 0
