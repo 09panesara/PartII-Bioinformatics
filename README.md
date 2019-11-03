@@ -1,4 +1,4 @@
-Bioinformatics Course for Computer Science II
+# Bioinformatics Course for Computer Science II, University of Cambridge
 
 In this repository:
 
