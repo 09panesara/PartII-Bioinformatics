@@ -44,5 +44,5 @@ class NeedlemanWunsch:
         print (np.matrix(algnmnt_mtx))
         print (np.matrix(ptr_mtx))
 
-nw = NeedlemanWunsch('PAWHEAE', 'HEAGAWGHEE')
-nw.needleman_wunsch(-8, MatrixInfo.blosum50)
+nw = NeedlemanWunsch('AGTTCA', 'ACCGTT')
+nw.needleman_wunsch(-1, MatrixInfo.blosum50)
